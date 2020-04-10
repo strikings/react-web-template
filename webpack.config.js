@@ -18,15 +18,27 @@ module.exports = {
         rules: [
             { test: /\.jpg|png|gif|bmp|webp$/, use: 'url-loader' }, // 处理图片
             { test: /\.ttf|woff|woff2|eot|svg$/, use: 'url-loader' }, // 处理字体文件
-            { test: /\.css$/, use: ['style-loader', 'css-loader'] }, // 处理普通css样式表
-            { test: /\.scss$/, use: ['style-loader', 'css-loader?modules&localIdentName=[path][name]-[local]-[hash:5]', 'sass-loader'] },// 处理 .scss 样式表的loader
+            { test: /\.css$/i, use: ['style-loader', 'css-loader'] }, // 处理普通css样式表
+            {
+                test: /\.scss$/,
+                use: [
+                    { loader: "style-loader" },
+                    {
+                        loader: "css-loader",
+                        options: {
+                            modules: {
+                                localIdentName: "[path][name]-[local]-[hash:5]"
+                            }
+                        }
+                    }],   //打包处理css样式表的第三方loader
+            },
             { test: /\.js|jsx$/, use: 'babel-loader', exclude: /node_modules/ } // babel-loader
         ]
     },
     resolve: {
         extensions: ['.js', '.jsx', '.json'], // 可省略的扩展名
         alias: {
-            '@': path.join(__dirname,'./src') // 设置别名
+            '@': path.join(__dirname, './src') // 设置别名
         }
     }
 }
